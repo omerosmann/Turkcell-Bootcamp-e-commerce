@@ -43,10 +43,10 @@ public class ProductManager implements ProductService {
 
     @Override
     public void update(Product product)  {
-        if(product.getPrice() < 0){
+        if(product.getPrice() <= 0){
             throw new RuntimeException("Fiyat sıfırdan büyük olmalıdır.");
         }
-        if(product.getQuantity() < 0){
+        if(product.getQuantity() <= 0){
             throw new RuntimeException("Ürün miktarı sıfırdan büyük olmalıdır");
         }
         if (product.getDescription().length() <= 10 || product.getDescription().length() >= 50){
