@@ -49,7 +49,7 @@ public class ProductManager implements ProductService {
         if(product.getQuantity() < 0){
             throw new RuntimeException("Ürün miktarı sıfırdan büyük olmalıdır");
         }
-        if (product.getDescription().length() <= 10 && product.getDescription().length() >= 50){
+        if (product.getDescription().length() <= 10 || product.getDescription().length() >= 50){
             throw  new RuntimeException("Açıklama alanı min 10 karakter max 50 karakter olmalıdır");
         }else {
             productRepository.update(product);
