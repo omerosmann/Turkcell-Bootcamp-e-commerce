@@ -1,6 +1,6 @@
 package kodlama.io.ecommerce.business.abstracts;
 
-import kodlama.io.ecommerce.entities.concretes.Product;
+import kodlama.io.ecommerce.entities.Product;
 
 import java.util.List;
 
@@ -8,11 +8,11 @@ public interface ProductService {
 
     List<Product> getAll();
 
-    Product getId(int id);
+    Product getById(int id);
 
-    void add(Product product);
+    Product add(Product product);
 
-    void update(Product product);
+    Product update(int id,Product product);
 
     void delete(int id);
 }

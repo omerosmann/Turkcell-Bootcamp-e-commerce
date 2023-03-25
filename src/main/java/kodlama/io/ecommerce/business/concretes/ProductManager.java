@@ -1,63 +1,62 @@
 package kodlama.io.ecommerce.business.concretes;
 
 import kodlama.io.ecommerce.business.abstracts.ProductService;
-import kodlama.io.ecommerce.entities.concretes.Product;
-import kodlama.io.ecommerce.repository.abstracts.ProductRepository;
+import kodlama.io.ecommerce.entities.Product;
+import kodlama.io.ecommerce.repository.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
+@AllArgsConstructor
 public class ProductManager implements ProductService {
-
-    ProductRepository productRepository;
-
-    public ProductManager(ProductRepository productRepository){
-        this.productRepository = productRepository;
-    }
+    private final ProductRepository productRepository;
 
     @Override
     public List<Product> getAll() {
-        if (productRepository.getAll().size() == 0) throw new RuntimeException("No Product is found.");
-        return productRepository.getAll();
+        return productRepository.findAll();
     }
 
     @Override
-    public Product getId(int id) {
-        return productRepository.getId(id);
+    public Product getById(int id) {
+        return productRepository.getById(id);
     }
 
     @Override
-    public void add(Product product)  {
-        if(product.getPrice() <= 0){
-            throw new RuntimeException("Fiyat sıfırdan büyük olmalıdır.");
-        }
-        if(product.getQuantity() <= 0){
-            throw new RuntimeException("Ürün miktarı sıfırdan büyük olmalıdır");
-        }
-        if (product.getDescription().length() <= 10 || product.getDescription().length() >= 50){
-            throw  new RuntimeException("Açıklama alanı min 10 karakter max 50 karakter olmalıdır");
-        }else {
-            productRepository.add(product);
-        }
+    public Product add(Product product)  {
+        validateProduct(product);
+        return productRepository.save(product);
+
     }
 
     @Override
-    public void update(Product product)  {
-        if(product.getPrice() <= 0){
-            throw new RuntimeException("Fiyat sıfırdan büyük olmalıdır.");
-        }
-        if(product.getQuantity() <= 0){
-            throw new RuntimeException("Ürün miktarı sıfırdan büyük olmalıdır");
-        }
-        if (product.getDescription().length() <= 10 || product.getDescription().length() >= 50){
-            throw  new RuntimeException("Açıklama alanı min 10 karakter max 50 karakter olmalıdır");
-        }else {
-            productRepository.update(product);
-        }
+    public Product update(int id,Product product)  {
+        validateProduct(product);
+        return productRepository.save(product);
     }
 
     @Override
     public void delete(int id) {
-        productRepository.delete(id);
+        productRepository.deleteById(id);
+    }
+
+    private void validateProduct(Product product) {
+        checkIfUnitPriceValid(product);
+        checkIfQuantityValid(product);
+        checkIfDescriptionLengthValid(product);
+    }
+
+    private void checkIfUnitPriceValid(Product product) {
+        if (product.getPrice() <= 0)
+            throw new IllegalArgumentException("Price cannot be less than or equal to zero.");
+    }
+
+    private void checkIfQuantityValid(Product product) {
+        if (product.getQuantity() < 0) throw new IllegalArgumentException("Quantity cannot be less than zero.");
+    }
+
+    private void checkIfDescriptionLengthValid(Product product) {
+        if (product.getDescription().length() < 10 || product.getDescription().length() > 50)
+            throw new IllegalArgumentException("Description length must be between 10 and 50 characters.");
     }
 }
