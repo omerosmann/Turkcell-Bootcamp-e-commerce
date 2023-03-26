@@ -3,22 +3,17 @@ package kodlama.io.ecommerce.api.controller;
 
 import kodlama.io.ecommerce.business.abstracts.ProductService;
 import kodlama.io.ecommerce.entities.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
+@AllArgsConstructor
 public class ProductsController {
-
     private final ProductService productService;
-
-    @Autowired
-    public ProductsController(ProductService productService){
-        this.productService = productService;
-    }
 
     @GetMapping
     public List<Product> getAll(){
@@ -26,14 +21,15 @@ public class ProductsController {
     }
 
     @GetMapping("/{id}")
-    public Product getId(@PathVariable int id) {
+    public Product getById(@PathVariable int id) {
         return productService.getById(id);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    //@ResponseStatus(HttpStatus.CREATED)
     public Product add(@RequestBody Product product){
-        return productService.add(product);
+         return productService.add(product);
+
     }
 
     @PutMapping("/{id}")

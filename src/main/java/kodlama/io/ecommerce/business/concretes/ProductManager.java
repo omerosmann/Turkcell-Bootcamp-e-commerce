@@ -19,7 +19,8 @@ public class ProductManager implements ProductService {
 
     @Override
     public Product getById(int id) {
-        return productRepository.getById(id);
+        checkIfProductExists(id);
+        return productRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -31,12 +32,15 @@ public class ProductManager implements ProductService {
 
     @Override
     public Product update(int id,Product product)  {
+        checkIfProductExists(id);
+        product.setId(id);
         validateProduct(product);
         return productRepository.save(product);
     }
 
     @Override
     public void delete(int id) {
+        checkIfProductExists(id);
         productRepository.deleteById(id);
     }
 
@@ -58,5 +62,9 @@ public class ProductManager implements ProductService {
     private void checkIfDescriptionLengthValid(Product product) {
         if (product.getDescription().length() < 10 || product.getDescription().length() > 50)
             throw new IllegalArgumentException("Description length must be between 10 and 50 characters.");
+    }
+
+    private void checkIfProductExists(int id) {
+        if (!productRepository.existsById(id)) throw new RuntimeException("Böyle bir ürün mevcut değil.");
     }
 }
