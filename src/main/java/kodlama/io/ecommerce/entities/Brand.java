@@ -11,18 +11,20 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Table(name = "products")
-public class Product {
+@Table(name = "brands")
+public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "product")
+    @ManyToOne
     @JsonManagedReference
-    private List<Brand> brands;
-
+    private Product product;
+    @OneToMany(mappedBy = "brand")
+    @JsonManagedReference
+    private List<Model> models;
 }

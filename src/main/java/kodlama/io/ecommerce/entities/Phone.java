@@ -3,26 +3,33 @@ package kodlama.io.ecommerce.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import kodlama.io.ecommerce.entities.enums.StockStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Table(name = "products")
-public class Product {
+@Table(name = "phones")
+public class Phone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "product")
+    private String color;
+    private long  internalMemory;
+    private double price;
+    private long quantity;
+    private String description;
+    @Enumerated(EnumType.STRING)
+    private StockStatus stockStatus;
+    @ManyToOne
     @JsonManagedReference
-    private List<Brand> brands;
+    private Model model;
+
 
 }

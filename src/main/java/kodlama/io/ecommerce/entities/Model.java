@@ -1,6 +1,5 @@
 package kodlama.io.ecommerce.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,18 +10,20 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Table(name = "products")
-public class Product {
+@Table(name = "models")
+public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "product")
+    @ManyToOne
     @JsonManagedReference
-    private List<Brand> brands;
-
+    private Brand brand;
+    @OneToMany(mappedBy = "model")
+    @JsonManagedReference
+    private List<Phone> phones;
 }
