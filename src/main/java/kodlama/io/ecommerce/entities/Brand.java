@@ -25,6 +25,6 @@ public class Brand {
     @JsonManagedReference
     private Product product;
     @OneToMany(mappedBy = "brand")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Model> models;
 }
