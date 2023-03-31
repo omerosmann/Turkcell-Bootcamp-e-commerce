@@ -22,7 +22,7 @@ public class Product {
     private long id;
     private String name;
     @OneToMany(mappedBy = "product")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Brand> brands;
 
 }
