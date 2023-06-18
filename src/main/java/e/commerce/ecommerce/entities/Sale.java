@@ -29,4 +29,8 @@ public class Sale {
     @ManyToOne
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
 }
